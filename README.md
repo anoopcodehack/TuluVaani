@@ -1,178 +1,184 @@
-# TuluVaani 🎙️
-### A first-attempt Tulu speech pipeline — demonstrated through a coastal Karnataka scheme & fisheries advisory assistant
+# TuluVaani 🎙️ (ತುಳು ವಾಣಿ)
 
-> *"vaani" (ವಾಣಿ) = voice.* Tulu (ತುಳು) is spoken by ~1.8–2.5 million people in coastal Karnataka and Kasaragod, Kerala — and has no usable open-source speech recognition or synthesis today.
+> **A first-attempt Tulu speech recognition pipeline — demonstrated through a coastal Karnataka scheme & fisheries advisory voice assistant.**
+>
+> *Tulu (ತುಳು)* is spoken by ~1.8–2.5 million people in coastal Karnataka and Kasaragod, Kerala, yet possesses no production open-source speech recognition (ASR) or synthesis (TTS) infrastructure today.
 
 ---
 
 ## 1. What This Project Actually Is
 
-This is **not** "another government-scheme chatbot." That category is already solved at national scale (see §3). What isn't solved is **Tulu speech technology** — and that's the actual contribution here.
+This project is **not** merely another wrapper around a government chatbot. The core value and academic contribution lie in **Tulu speech technology**.
 
-The project has two layers, and they're not equally weighted:
-
-| Layer | What it is | Why it matters |
+| Layer | Component | Purpose & Value |
 |---|---|---|
-| **Core contribution** | A first-attempt Tulu ASR pipeline, fine-tuned from a Kannada speech model on a small self-collected Tulu dataset | This is the genuinely novel, citable part — an open research gap, not a wrapper around an existing API |
-| **Demonstration use case** | A voice-based government scheme & fisheries/agri advisory assistant for coastal Karnataka, in Kannada + (limited) Tulu | Proves the speech pipeline is useful for something real, without pretending the chatbot layer itself is novel |
+| **Core Research Contribution** | **Tulu ASR Transfer Learning Pipeline** | Fine-tunes `ai4bharat/indicwav2vec-kannada` on a self-collected Tulu speech corpus. Bridges an open NLP/speech gap for a low-resource Dravidian language. |
+| **Applied Demonstration** | **Coastal Advisory Voice Assistant** | A voice-first assistant answering queries on coastal Karnataka schemes (PMMSY, Raitha Vidya Nidhi, Krishi Bhagya) and crop/marine advisories. |
 
-Being upfront about this distinction is deliberate — it's the difference between "I built app #N in a solved category" and "I identified an unsolved problem and built a first, honestly-evaluated attempt at it."
+---
 
-## 2. The Problem
-
-- Tulu has no meaningful digital speech infrastructure. No production ASR, no TTS, nothing a developer can plug in today.
-- Coastal Karnataka's Tulu-speaking population — including fisherfolk, elderly citizens, and small farmers — is invisible to every major language-inclusion initiative in Indian GovTech, because none of them go past Kannada.
-- Existing scheme-advisory chatbots (see below) are farmer-centric and miss fisheries-specific schemes and coastal advisory needs entirely.
-
-## 3. Prior Art — What Already Exists (and what doesn't)
-
-Being accurate here matters more than sounding original.
-
-**Already solved, don't rebuild:**
-- **Kisan e-Mitra** (Ministry of Agriculture, 2023) — voice-enabled chatbot for PM-KISAN, crop insurance, and loan queries, in 11 languages including Kannada, built on Bhashini's IndicTrans2.
-- **AI4Bharat's IndicWav2Vec** — solid open-source ASR covering major Indic languages, including Kannada.
-
-**Confirmed still open:**
-- No production Tulu ASR or TTS pipeline exists. Academic attempts are small-scale (one published Tulu ASR effort used only ~7 hours of audio).
-- A Tulu-English text dataset (FLORES-200 extension) exists, built by **Jai Tulunad**, a Mangaluru-based volunteer language organization — useful for translation, not speech.
-- No fisheries-specific or Karnataka state-scheme voice assistant exists in any language.
-
-This project sits precisely in that gap: **Tulu speech + coastal-specific advisory**, neither of which is covered by existing solutions.
-
-## 4. Core Contribution: The Tulu ASR Pipeline
+## 2. Clean Project Structure
 
 ```
-[1] Data Collection
-      │   Small, targeted Tulu speech corpus (few hours) —
-      │   scheme/agri/fisheries vocabulary + common phrases,
-      │   recorded from local volunteer speakers
-      │   (potential collaboration: Jai Tulunad, Mangaluru)
-      ▼
-[2] Transfer Learning
-      │   Fine-tune IndicWav2Vec (Kannada-pretrained) on the
-      │   Tulu dataset — justified because Tulu code-mixes
-      │   heavily with Kannada, making Kannada-pretrained
-      │   weights a legitimate starting point, not a hack
-      ▼
-[3] Honest Evaluation
-      │   Word Error Rate reported plainly, including failure
-      │   cases — no inflated claims of "solving" Tulu ASR
-      ▼
-[4] Applied Demo
-          Wrapped into the voice-advisory assistant below,
-          as evidence the pipeline is usable, not just a
-          benchmark number
+TuluVaani/
+├── client/                     # Frontend Web App (React 18 + Vite)
+│   ├── src/
+│   │   ├── App.jsx             # Voice UI (mic button, transcription display, audio playback)
+│   │   ├── index.css           # Clean mobile-first stylesheet
+│   │   └── main.jsx            # React root mount
+│   ├── index.html              # App entry HTML
+│   ├── package.json            # Client dependencies
+│   └── vite.config.js          # Vite config with backend proxy (/api -> http://localhost:5000)
+│
+├── server/                     # Backend Orchestrator (Node.js + Express)
+│   ├── src/
+│   │   ├── data/
+│   │   │   └── schemes.json    # Knowledge base: coastal Karnataka schemes & crop advisories
+│   │   ├── lib/
+│   │   │   ├── answer.js       # Grounded LLM answering logic + extractive fallback
+│   │   │   └── retrieval.js    # In-memory TF-IDF cosine similarity search engine
+│   │   ├── routes/
+│   │   │   ├── asr.js          # Speech recognition endpoint (routes to ML service)
+│   │   │   ├── query.js        # Question answering & scheme retrieval route
+│   │   │   └── tts.js          # Text-to-speech synthesis endpoint
+│   │   └── index.js            # Express server entry point (port 5000)
+│   ├── .env.example            # Environment configuration template
+│   └── package.json            # Server dependencies
+│
+├── ml/                         # Machine Learning & Speech Pipeline
+│   ├── data/
+│   │   ├── prompts.json        # Curated Tulu prompts written in Kannada script
+│   │   └── sample_manifest.csv # Audio-transcript mapping schema
+│   ├── scripts/
+│   │   ├── asr_service.py      # FastAPI microservice serving the fine-tuned ASR model
+│   │   ├── evaluate_wer.py     # Evaluation script computing Word Error Rate (WER) & CER
+│   │   └── prepare_dataset.py  # Audio resampler (16kHz mono WAV) & train/test splitter
+│   └── requirements.txt        # Python dependencies (PyTorch, Torchaudio, Transformers, etc.)
+│
+├── .gitignore                  # Git ignore rules for Node, Python, audio & models
+├── LICENSE                     # MIT License
+└── README.md                   # Single master project documentation
 ```
 
-## 5. Applied Demo: Voice Advisory Assistant
+---
 
-The downstream application that puts the ASR pipeline to work — scoped honestly as a demo, not a claimed production system.
+## 3. End-to-End System Architecture
 
-```
-🎤 User speaks (Kannada, or Tulu where pipeline supports it)
-      │
-      ▼
-[ASR]  → IndicWav2Vec (Kannada) / fine-tuned Tulu model
-      │
-      ▼
-[Retrieval]  → Vector search over a curated corpus of:
-      │           - Karnataka state schemes (Raitha Vidya Nidhi,
-      │             Krishi Bhagya, Bhoochetana)
-      │           - Fisheries schemes (PM Matsya Sampada Yojana)
-      │           - Coastal crop advisory (areca nut, coconut)
-      ▼
-[Constrained LLM]  → Answers ONLY from retrieved documents;
-      │                explicitly says "not sure, visit [office]"
-      │                if retrieval is weak — no hallucinated
-      │                eligibility criteria or amounts
-      ▼
-[TTS]  → AI4Bharat Indic-TTS (Kannada) / Tulu where available
-      ▼
-🔊 Spoken answer
+```mermaid
+flowchart TD
+    User([Farmer / Fisher in Coastal Karnataka]) -->|Speaks Tulu or Kannada| Client[React + Vite Frontend PWA]
+    Client -->|Audio WAV / WebM| Backend[Node.js Express Server]
+    Backend -->|Audio Buffer| ASR[ASR Service: IndicWav2Vec / Fine-tuned Tulu]
+    ASR -->|Transcribed Text| Backend
+    Backend -->|Search Query| Retriever[TF-IDF / Vector Store over schemes.json]
+    Retriever -->|Top-K Scheme Docs| LLM[Constrained LLM: Gemini / OpenAI]
+    LLM -->|Grounded Answer| Backend
+    Backend -->|Answer Text| TTS[AI4Bharat Indic-TTS / SpeechSynthesis]
+    TTS -->|Spoken Audio| Backend
+    Backend -->|Audio + Answer Text + Scheme Sources| Client
+    Client -->|Voice Playback & Display Cards| User
 ```
 
-## 6. Tech Stack
+---
 
-| Layer | Choice | Why |
-|---|---|---|
-| Base ASR model | IndicWav2Vec2 (AI4Bharat), Hugging Face | Kannada-pretrained, fine-tunable for Tulu via transfer learning |
-| Data collection | Custom recording protocol + consent forms | No existing Tulu speech dataset of usable size exists |
-| Embeddings | Multilingual `sentence-transformers` | Kannada query → document matching |
-| Vector store | ChromaDB / FAISS | Lightweight, appropriate for a mini-project corpus size |
-| LLM | Open Hugging Face model or Gemini/OpenAI API, prompt-constrained | Answers only from retrieved context |
-| TTS | AI4Bharat Indic-TTS / Coqui (Kannada) | Best available open Kannada synthesis |
-| Backend | Node.js + Express | Orchestrates ASR → retrieval → LLM → TTS |
-| Frontend | React + Tailwind, mobile-first | Large mic button, icon-driven, minimal text |
-| Data storage | MongoDB Atlas | Scheme corpus metadata, anonymized query logs |
+## 4. Execution Blueprint: How the Whole Project Is Done
 
-## 7. Data Collection Plan & Ethics
+### **Phase 1: Working Kannada Baseline & Local Scaffold (Immediate)**
+* Run the Express server and Vite frontend locally.
+* Test `/api/query` using the built-in TF-IDF retrieval over `schemes.json`.
+* The client currently uses the browser's Web Speech API as a working Kannada stand-in so the full loop (mic $\to$ retrieve $\to$ text/audio response) works right away with zero setup.
+* Add an LLM API key (`GEMINI_API_KEY` or `OPENAI_API_KEY`) to `server/.env` so `server/src/lib/answer.js` synthesizes natural, grounded answers.
 
-Since no Tulu dataset of usable size exists, collecting one is part of the deliverable, not a footnote:
+### **Phase 2: Targeted Tulu Speech Data Collection**
+* Because no usable open Tulu speech dataset exists, collecting 2–5 hours of targeted audio is part of the core deliverable.
+* **Recording Protocol**:
+  * Read prompts from `ml/data/prompts.json` (phrases covering fisheries, farming diseases, subsidies, and civic queries).
+  * Text is represented in **Kannada script** (the standard written medium for Tulu).
+  * Record 6–10 native Tulu speakers (covering Mangaluru, Udupi, and Kasaragod dialect variations).
+  * Save as 16,000 Hz (16kHz), single-channel (mono), 16-bit PCM WAV.
+  * Map files into `sample_manifest.csv` with speaker ID and transcripts.
 
-- Recruit volunteer native Tulu speakers (family, ISDC network, local contacts)
-- Prioritize scheme/agri/fisheries vocabulary and everyday phrases over open-domain speech, to keep scope realistic
-- Obtain informed consent for recording and stated research/educational use
-- Credit all contributing speakers explicitly in the project writeup
-- Reach out to **Jai Tulunad** (Mangaluru) — they've already done comparable groundwork on the text side (FLORES-200 Tulu) and may be willing to advise or share contacts
+### **Phase 3: Fine-Tuning IndicWav2Vec on Tulu (The Research Contribution)**
+* **Why Transfer Learning Works**: Tulu heavily code-mixes with Kannada and shares phonetic inventory and script. Starting from `ai4bharat/indicwav2vec-kannada` provides a strong phonetic foundation.
+* **Training Workflow**:
+  1. Run `python ml/scripts/prepare_dataset.py` to normalize transcripts and create 80/20 train/test splits.
+  2. Load `ai4bharat/indicwav2vec-kannada` in PyTorch with Hugging Face `Wav2Vec2ForCTC`.
+  3. Fine-tune on Google Colab (Free T4 GPU) using CTC loss.
+  4. Run `python ml/scripts/evaluate_wer.py` to evaluate Word Error Rate (WER) and Character Error Rate (CER).
+  5. Document failure modes (e.g. nasalized vowels, retroflex consonants, borrowed loanwords).
 
-## 8. Scope
+### **Phase 4: Full App Integration**
+* Start the Python ASR microservice (`python ml/scripts/asr_service.py` on port 8000).
+* Wire `server/src/routes/asr.js` to forward recorded audio from the React client to the ASR microservice.
+* Connect `server/src/routes/tts.js` to AI4Bharat Indic-TTS for Kannada spoken audio generation.
 
-### ✅ In scope for v1
-- Small Tulu ASR fine-tune with **honestly reported** accuracy (including where it fails)
-- Full Kannada pipeline (ASR → retrieval → LLM → TTS) as the reliable, working demo path
-- Karnataka state-scheme + fisheries-scheme corpus (curated, ~30–50 documents)
-- Mobile-first PWA interface
+### **Phase 5: Evaluation & Final Deliverables**
+* Conduct usability tests with native speakers.
+* Compile an honest evaluation report reporting real-world WER, strengths, and failure modes.
 
-### ⏸️ Explicitly out of scope
-- Production-grade Tulu ASR/TTS — v1 is a documented first attempt, not a finished system
-- Tulu TTS (speech generation) — ASR (speech-to-text) is the v1 focus; TTS for Tulu is future work
-- Live government portal integration
-- Multi-turn conversation memory
+---
 
-### 🔭 Future work (major project)
-- Expand the Tulu dataset with more speakers/hours
-- Attempt Tulu TTS once ASR results justify it
-- Formal collaboration with Jai Tulunad or a linguistics department
-- IVR/phone-call access for users without smartphones
+## 5. Quickstart & Local Setup
 
-## 9. Known Risks & Honest Limitations
-
-- A few hours of self-collected audio will **not** produce a robust ASR system — the deliverable is a credible first attempt with transparent error analysis, not a claim of solving Tulu ASR
-- Retrieval quality determines answer correctness more than model choice — most engineering effort belongs there
-- Dialectal variation within Tulu itself (regional differences across coastal Karnataka) may affect results
-- The assistant must always disclose: *informational aid only, verify with official sources*
-
-## 10. Build Phases
-
-1. **Phase 1 — Kannada pipeline first**: Build and validate the full ASR → retrieval → LLM → TTS loop in Kannada, where all components are reliable. This is your working baseline and fallback demo.
-2. **Phase 2 — Tulu data collection**: Record and transcribe the small Tulu corpus, in parallel with Phase 1.
-3. **Phase 3 — Tulu fine-tuning**: Fine-tune IndicWav2Vec on the Tulu set, evaluate honestly (WER, failure modes).
-4. **Phase 4 — Integration**: Plug the Tulu model into the same pipeline as an alternate ASR path.
-5. **Phase 5 — Field test**: Test with real speakers — both Kannada and Tulu — and document actual usability, not just lab numbers.
-
-## 11. Setup
-
+### 1. Backend Server
 ```bash
-git clone <repo-url>
-cd tuluvaani
-
-# Backend
-cd server && npm install
-npm run dev
-
-# Frontend
-cd ../client && npm install
+cd server
+npm install
 npm run dev
 ```
+* Runs on `http://localhost:5000`.
+* Test query endpoint:
+  ```bash
+  curl -X POST http://localhost:5000/api/query -H "Content-Type: application/json" -d "{\"text\":\"areca nut disease\"}"
+  ```
 
-Environment variables: `HF_API_KEY`, `LLM_API_KEY`, `MONGODB_URI` — see `.env.example`.
+### 2. Frontend Client
+```bash
+cd client
+npm install
+npm run dev
+```
+* Opens on `http://localhost:5173`.
+* Tap the large 🎤 button to test voice interaction or type questions into the input box.
 
-## 12. Acknowledgments
+### 3. ML / ASR Microservice (Optional for Phase 3/4)
+```bash
+cd ml
+pip install -r requirements.txt
+python scripts/asr_service.py
+```
+* Runs on `http://localhost:8000` with interactive docs at `http://localhost:8000/docs`.
 
-- **AI4Bharat** — IndicWav2Vec2 and Indic-TTS models
-- **Jai Tulunad** — prior groundwork on Tulu-English text resources (FLORES-200), Mangaluru
-- All volunteer Tulu speakers who contributed recordings for this project
+---
 
-## 13. License
+## 6. Environment Variables (`server/.env`)
 
-MIT
+```env
+PORT=5000
+
+# Optional: Add for natural LLM responses (Gemini / OpenAI / Hugging Face)
+LLM_API_KEY=
+HF_API_KEY=
+
+# Optional: Microservice ASR endpoint
+ASR_SERVICE_URL=http://localhost:8000/transcribe
+
+# Optional: Database for user query logs
+MONGODB_URI=
+```
+
+---
+
+## 7. Ethical Scope & Disclaimers
+
+* **Speaker Consent**: All voice contributors must provide informed consent for research and open evaluation use.
+* **Groundedness**: The assistant strictly adheres to retrieved government documents. If uncertain, it directs users to their nearest *Raitha Samparka Kendra* or *Fisheries Department* office.
+* **Prior Art & Citations**:
+  * **AI4Bharat**: IndicWav2Vec2 & Indic-TTS architectures.
+  * **Jai Tulunad (Mangaluru)**: Pioneers of FLORES-200 Tulu text groundwork.
+
+---
+
+## 8. License
+
+MIT License. See [LICENSE](LICENSE) for details.
