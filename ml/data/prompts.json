@@ -1,0 +1,58 @@
+[
+  {
+    "id": "tulu_prompt_001",
+    "category": "fisheries",
+    "kannada_script": "ಎಂಕ್ಲೆಗ್ ಮೀನ್ ಬಲೆ ಬುಕ್ಕ ಬೋಟ್‌ಗ್ ಸರ್ಕಾರಿ ಸಬ್ಸಿಡಿ ತಿಕ್ಕುಂಡಾ?",
+    "english_translation": "Do we get government subsidies for fishing nets and boats?",
+    "intent": "fisheries_subsidy_query"
+  },
+  {
+    "id": "tulu_prompt_002",
+    "category": "fisheries",
+    "kannada_script": "ಕಡಲ್ಡ್ ಗಾಳಿ ಬರ್ಪುಂಡುಂದು ಇನಿ ಮೀನ್ ಪತ್ತೆರೆ ಪೋವೊಲೀಯಾ?",
+    "english_translation": "There is a sea storm warning, can we go fishing today?",
+    "intent": "fisheries_safety_query"
+  },
+  {
+    "id": "tulu_prompt_003",
+    "category": "agriculture",
+    "kannada_script": "ಅಡಿಕೆ ಮರಕ್ ಕೊಳೆ ರೋಗ ಬತ್ತ್ಂಡ್, ದಾದ ಮರ್ದ್ ಪಾಡೊಡು?",
+    "english_translation": "Areca nut tree has fruit rot disease, what medicine/spray should be applied?",
+    "intent": "crop_disease_advisory"
+  },
+  {
+    "id": "tulu_prompt_004",
+    "category": "agriculture",
+    "kannada_script": "ರೈತ ವಿದ್ಯಾ ನಿಧಿಕ್ ಅರ್ಜಿ ಪಾಡೆರೆ ದಾದ ದಾಖಲೆ ಬೋಡು?",
+    "english_translation": "What documents are required to apply for Raitha Vidya Nidhi scholarship?",
+    "intent": "scheme_eligibility_query"
+  },
+  {
+    "id": "tulu_prompt_005",
+    "category": "agriculture",
+    "kannada_script": "ತಾರೆದ ಮರಕ್ ದುಂಬು ರೋಗ ಬತ್ತಂಡ ದಾದ ಮಲ್ಪುನೆ?",
+    "english_translation": "What should be done if coconut trees get rhinoceros beetle disease?",
+    "intent": "crop_disease_advisory"
+  },
+  {
+    "id": "tulu_prompt_006",
+    "category": "schemes",
+    "kannada_script": "ಕೃಷಿ ಭಾಗ್ಯ ಯೋಜನೆದ ಅಡಿಟ್ ಕೃಷಿ ಹೊಂಡ ಮಲ್ಪೆರೆ ಕಾಸ್ ತಿಕ್ಕುಂಡಾ?",
+    "english_translation": "Is money given to build farm ponds under Krishi Bhagya scheme?",
+    "intent": "scheme_financial_aid"
+  },
+  {
+    "id": "tulu_prompt_007",
+    "category": "soil_health",
+    "kannada_script": "ಭೂಚೇತನ ಯೋಜನೆಡ್ ನಂಕ್ ಮಣ್ಣ್ ಪರೀಕ್ಷೆ ಉಚಿತವಾದ್ ಮಲ್ಪುದೆರಾ?",
+    "english_translation": "Do they conduct free soil testing under the Bhoochetana scheme?",
+    "intent": "soil_testing_query"
+  },
+  {
+    "id": "tulu_prompt_008",
+    "category": "general",
+    "kannada_script": "ಹತ್ತಿರದ ರೈತ ಸಂಪರ್ಕ ಕೇಂದ್ರ ಓಲುಂಡು ಪನ್ಪರಾ?",
+    "english_translation": "Can you tell me where the nearest Raitha Samparka Kendra is?",
+    "intent": "contact_query"
+  }
+]

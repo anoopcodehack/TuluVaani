@@ -1,0 +1,5 @@
+audio_path,transcript,speaker_id,gender,dialect,duration_sec
+audio/spk01_001.wav,ಎಂಕ್ಲೆಗ್ ಮೀನ್ ಬಲೆ ಬುಕ್ಕ ಬೋಟ್‌ಗ್ ಸರ್ಕಾರಿ ಸಬ್ಸಿಡಿ ತಿಕ್ಕುಂಡಾ,spk01,M,Mangaluru,3.42
+audio/spk01_002.wav,ಕಡಲ್ಡ್ ಗಾಳಿ ಬರ್ಪುಂಡುಂದು ಇನಿ ಮೀನ್ ಪತ್ತೆರೆ ಪೋವೊಲೀಯಾ,spk01,M,Mangaluru,3.10
+audio/spk02_003.wav,ಅಡಿಕೆ ಮರಕ್ ಕೊಳೆ ರೋಗ ಬತ್ತ್ಂಡ್ ದಾದ ಮರ್ದ್ ಪಾಡೊಡು,spk02,F,Udupi,3.85
+audio/spk02_004.wav,ರೈತ ವಿದ್ಯಾ ನಿಧಿಕ್ ಅರ್ಜಿ ಪಾಡೆರೆ ದಾದ ದಾಖಲೆ ಬೋಡು,spk02,F,Udupi,3.20
