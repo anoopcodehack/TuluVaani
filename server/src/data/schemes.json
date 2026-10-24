@@ -1,0 +1,44 @@
+[
+  {
+    "id": "raitha-vidya-nidhi",
+    "title": "Raitha Vidya Nidhi",
+    "category": "education-support",
+    "text": "Raitha Vidya Nidhi is a Karnataka state government scholarship scheme for children of farmers. It provides financial assistance for school and college education to reduce the burden of education costs on farming families. Eligible applicants must be children of farmers registered with the Karnataka agriculture department. Application is done through the Vidya Nidhi portal with proof of land records and school enrollment."
+  },
+  {
+    "id": "krishi-bhagya",
+    "title": "Krishi Bhagya",
+    "category": "irrigation-support",
+    "text": "Krishi Bhagya is a Karnataka scheme that helps farmers build farm ponds and adopt efficient water harvesting and micro-irrigation methods to protect against rainfall variability. It provides subsidy support for farm pond construction, polythene lining, and drip irrigation equipment. Farmers in rain-fed districts are prioritized."
+  },
+  {
+    "id": "bhoochetana",
+    "title": "Bhoochetana",
+    "category": "soil-health",
+    "text": "Bhoochetana is a Karnataka government initiative for improving soil health and crop productivity through soil testing, balanced fertilizer use, and location-specific agronomic advisory. Farmers can get free soil testing at designated Raitha Samparka Kendras (farmer contact centres) and receive recommendations for their specific land."
+  },
+  {
+    "id": "pmmsy",
+    "title": "PM Matsya Sampada Yojana (PMMSY)",
+    "category": "fisheries",
+    "text": "PM Matsya Sampada Yojana is a central government scheme for the development of the fisheries sector, covering both marine and inland fisheries. It provides financial assistance for fishing boats, safety equipment, cold storage infrastructure, and insurance coverage for fisherfolk. Coastal Karnataka fisherfolk can apply through the state fisheries department."
+  },
+  {
+    "id": "areca-nut-advisory",
+    "title": "Areca Nut Crop Advisory",
+    "category": "crop-advisory",
+    "text": "Areca nut (adike) is a major cash crop in coastal and Malnad Karnataka. Common issues include yellow leaf disease and fruit rot caused by fungal infection during monsoon. Farmers are advised to ensure proper drainage, apply Bordeaux mixture as a preventive spray before monsoon, and consult the nearest Krishi Vigyan Kendra for disease-specific guidance."
+  },
+  {
+    "id": "coconut-advisory",
+    "title": "Coconut Crop Advisory",
+    "category": "crop-advisory",
+    "text": "Coconut cultivation in coastal Karnataka faces challenges from root wilt disease and rhinoceros beetle infestation. Recommended practices include regular removal of affected fronds, use of neem cake in the crown region, and pheromone traps for beetle control. Subsidy for coconut disease management is available through the horticulture department."
+  },
+  {
+    "id": "fishing-safety-advisory",
+    "title": "Fishing Safety Advisory",
+    "category": "fisheries-safety",
+    "text": "Fisherfolk along the Karnataka coast are advised to check daily weather and sea condition bulletins from the India Meteorological Department before venturing out. Boats should carry GPS-enabled distress alert transmitters where possible. During cyclone warnings, all fishing activity should be suspended immediately and boats moved to designated safe harbours."
+  }
+]
